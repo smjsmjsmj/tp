@@ -1,0 +1,136 @@
+<include file="Public:header" />
+<script src="__PUBLIC__/Cookery/js/Blog.js"></script>
+
+<!-- 引入sns.js -->
+<link rel="stylesheet" href="__PUBLIC__/cookery/css/share.css">
+
+<!--
+	ueditor
+-->
+<script src="__PUBLIC__/Cookery/js/ueditor/ueditor.config.js"></script>
+<script src="__PUBLIC__/Cookery/js/ueditor/ueditor.all.min.js"></script>
+<script src="__PUBLIC__/Cookery/js/ueditor/zh-cn.js"></script>
+<!--content-->
+<div class="blog">
+	<div class="container">
+		<input type="hidden" value="{$CookId}" id="hiddValue" />
+		<div class="col-md-9 ">
+			<!--content-->
+			<div class="single">
+				<div class="single-top">
+					<img class="img-responsive wow fadeInUp animated" data-wow-delay=".5s" src="http://{$serverUrl}/{$singleData.PicUrl}" alt="" />
+					<div class="lone-line">
+						<h4>{$singleData.Name}</h4>
+						<ul class="grid-blog">
+							<li><span><i class="glyphicon glyphicon-time"> </i>{$singleData.CreationTime}</span></li>
+							<li>
+								<a href="#div1" id="commentCount"><i class="glyphicon glyphicon-comment"> </i>{$singleData.commentCount} 评论</a>
+							</li>
+							<li>
+								<a href="#" onclick="details({$singleData.ID})"><i class="glyphicon glyphicon-th"> </i>详情</a>
+							</li>
+							<span>分享到：</span>
+							<div class="sns-share" style="margin-top: -27px;margin-left: 333px;">
+								<a href="" class="qzone"><i class="icon iconfont icon-qzone"></i></a>
+								<a href="" class="qq"><i class="icon iconfont icon-qq"></i></a>
+								<a href="" class="weibo"><i class="icon iconfont icon-weibo"></i></a>
+								<a href="" class="wechat"><i class="icon iconfont icon-wechat"></i></a>
+								<a href="" class="douban"><i class="icon iconfont icon-douban"></i></a>
+							</div>
+						</ul>
+						<p class="wow fadeInLeft animated" data-wow-delay=".5s">{$singleData.briefIntroduction}</span>
+						</p>
+					</div>
+				</div>
+				<div class="comment" id="commentDataList">
+					<h3>评论</h3>
+
+					<volist name="commentList" id="vo" mod="2">
+						<eq name="mod" value="0">
+							<div class="media wow fadeInLeft animated" data-wow-delay=".5s">
+						</eq>
+						<eq name="mod" value="1">
+							<div class="media media-1 wow fadeInUp animated" data-wow-delay=".5s">
+						</eq>
+						<div class="code-in">
+							<p class="smith">
+								<a href="#">{$vo.UserName}</a> <span>{$vo.CreationTime}</span></p>
+							<!--<p class="reply">
+								<a href="#"><i class="glyphicon glyphicon-repeat"> </i>REPLY</a>
+							</p>-->
+							<div class="clearfix"> </div>
+						</div>
+						<div class="media-left">
+							<a href="#">
+								<eq name="mod" value="0">
+									<img src="__PUBLIC__/cookery/images/si1.jpg" alt="">
+								</eq>
+								<eq name="mod" value="1">
+									<img src="__PUBLIC__/cookery/images/si.jpg" alt="">
+								</eq>
+							</a>
+						</div>
+						<div class="media-body">
+							<p>{$vo.Content}</p>
+						</div>
+						</div>
+					</volist>
+					</div>
+				</div>
+				<div class="leave" id="div1">
+					<h3>您的看法</h3>
+					<form action="" method="post" id="form1">
+						<div class="single-grid wow fadeInLeft animated" data-wow-delay=".5s">
+
+							<input type="text" id="UserName" name="UserName" value="姓名" onfocus="this.value='';" onblur="if (this.value == '') {this.value = '姓名';}">
+
+							<input type="text" id="Email" name="Email" value="邮箱" onfocus="this.value='';" onblur="if (this.value == '') {this.value = '邮箱';}">
+
+							<!--<input type="text" value="Web site" onfocus="this.value='';" onblur="if (this.value == '') {this.value = 'Web site';}">-->
+							<!--<textarea value=" " id="Content" name="Content" onfocus="this.value='';" onblur="if (this.value == '') {this.value = '您的看法是...';}">您的看法</textarea>-->
+							<label style="color: #000000;">留言内容:</label>
+							<input type="hidden" id="Content" />
+							<div onmousemove="initContent()" style="  margin-top: 10px;">
+								<textarea id="editor"></textarea>
+							</div>
+
+							<label class="hvr-rectangle-out">
+								<input type="button" value="发布" onclick="submitData()">
+								<input type="reset" id="resetdata" value="重置"/>
+						</label>
+						</div>
+					</form>
+				</div>
+
+			</div>
+			<!---->
+
+			<!--//content-->
+		</div>
+	</div>
+</div>
+
+<!--//content-->
+<script src="__PUBLIC__/Cookery/js/Single.js"></script>
+
+<script src="http://apps.bdimg.com/libs/jquery/1.8.0/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<script src="__PUBLIC__/Cookery/js/share/jquery.qrcode.min.js"></script>
+<script src="__PUBLIC__/Cookery/js/share/share.js"></script>
+
+<script>
+	$(function() {
+		var $config = {
+			url: 'http://www.GoodHome.com', // 网址，默认使用 window.location.href
+			site: '', // 来源（QQ空间会用到）, 默认读取head标签：<meta name="site" content="http://overtrue" />
+			title: '美食之家', // 标题，默认读取 document.title
+			description: '分享美食，就来美食之家吧！！！', // 描述, 默认读取head标签：<meta name="description" content="PHP弱类型的实现原理分析" />
+			iamge: '', // 图片, 默认取网页中第一个img标签
+			target: '_blank' //打开方式
+		};
+
+		$('.sns-share').share($config);
+	});
+</script>
+<!--footer-->
+<include file="Public:footer" />
